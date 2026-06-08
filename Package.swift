@@ -59,7 +59,9 @@ let package = Package(
             targets: ["RealmSwift"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/realm/realm-core.git", exact: coreVersion)
+        // Pointed at the fork carrying the Xcode 27 s2geometry build fix.
+        // Branch is based on v20.1.4, so coreVersion (used for REALM_VERSION_* above) stays accurate.
+        .package(url: "https://github.com/samsonjs/realm-core.git", branch: "fix/s2-searchstate-operator-less-xcode27-v20.1.4")
     ],
     targets: [
       .target(
