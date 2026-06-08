@@ -523,8 +523,15 @@ extension Projection: _ObservedResultsValue { }
     }
     /// Stores a type safe query used for filtering the Results. This is mutually exclusive
     /// to the `filter` parameter.
-    @State public var `where`: ((Query<ResultType>) -> Query<Bool>)? {
-        willSet {
+    // Backing storage uses a non-keyword name: Xcode 27's @State macro mishandles
+    // a property named with the backtick-escaped keyword `where`, emitting an
+    // unescaped `$where`/`_where` in its expansion. The public `where` API is
+    // preserved as a computed forwarder (its projected value was never used).
+    @State private var whereQuery: ((Query<ResultType>) -> Query<Bool>)?
+    public var `where`: ((Query<ResultType>) -> Query<Bool>)? {
+        get { whereQuery }
+        nonmutating set {
+            whereQuery = newValue
             storage.filter = newValue?(Query()).predicate
         }
     }
@@ -727,8 +734,15 @@ extension Projection: _ObservedResultsValue { }
     }
     /// Stores a type safe query used for filtering the SectionedResults. This is mutually exclusive
     /// to the `filter` parameter.
-    @State public var `where`: ((Query<ResultType>) -> Query<Bool>)? {
-        willSet {
+    // Backing storage uses a non-keyword name: Xcode 27's @State macro mishandles
+    // a property named with the backtick-escaped keyword `where`, emitting an
+    // unescaped `$where`/`_where` in its expansion. The public `where` API is
+    // preserved as a computed forwarder (its projected value was never used).
+    @State private var whereQuery: ((Query<ResultType>) -> Query<Bool>)?
+    public var `where`: ((Query<ResultType>) -> Query<Bool>)? {
+        get { whereQuery }
+        nonmutating set {
+            whereQuery = newValue
             storage.filter = newValue?(Query()).predicate
         }
     }
